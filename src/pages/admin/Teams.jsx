@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AdminSidebar from '../../components/AdminSidebar';
 
 const Teams = () => {
@@ -7,13 +7,45 @@ const Teams = () => {
     const [category, setCategory] = useState('');
     const [image, setImage] = useState(null);
 
-    const handleAddTeam = () => {
-        if (name && category && image) {
-            const newTeam = { id: Date.now(), name, category, image };
+    // Fetch Teams from API
+    useEffect(() => {
+        fetch('http://localhost:5000/api/teams')
+            .then((res) => res.json())
+            .then((data) => setTeams(data))
+            .catch((err) => console.error(err));
+    }, []);
+
+    // Handle Add Team
+    const handleAddTeam = async () => {
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('category', category);
+        formData.append('image', image);
+
+        try {
+            const response = await fetch('http://localhost:5000/api/teams', {
+                method: 'POST',
+                body: formData,
+            });
+            const newTeam = await response.json();
             setTeams([...teams, newTeam]);
             setName('');
             setCategory('');
             setImage(null);
+        } catch (error) {
+            console.error('Error adding team:', error);
+        }
+    };
+
+    // Handle Delete Team
+    const handleDeleteTeam = async (id) => {
+        try {
+            await fetch(`http://localhost:5000/api/teams/${id}`, {
+                method: 'DELETE',
+            });
+            setTeams(teams.filter((team) => team.id !== id));
+        } catch (error) {
+            console.error('Error deleting team:', error);
         }
     };
 
@@ -33,7 +65,19 @@ const Teams = () => {
                                 {teams.map((team) => (
                                     <li key={team.id} className="p-2 mb-2 bg-gray-50 rounded-lg flex items-center justify-between">
                                         <span>{team.name} - {team.category}</span>
-                                        <img src={URL.createObjectURL(team.image)} alt={team.name} className="w-12 h-12 object-cover rounded-md" />
+                                        {team.image && (
+                                            <img
+                                                src={`http://localhost:5000${team.image}`}
+                                                alt={team.name}
+                                                className="w-12 h-12 object-cover rounded-md"
+                                            />
+                                        )}
+                                        <button
+                                            onClick={() => handleDeleteTeam(team.id)}
+                                            className="ml-4 text-red-500 hover:text-red-700"
+                                        >
+                                            Delete
+                                        </button>
                                     </li>
                                 ))}
                             </ul>

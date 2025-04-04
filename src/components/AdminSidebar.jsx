@@ -11,7 +11,7 @@ const AdminSidebar = () => {
     };
 
     return (
-        <div className="h-screen w-64 bg-white shadow-lg p-4">
+        <div className="min-h-screen w-64 bg-white shadow-lg p-4">
             {/* Logo */}
             <div className="flex items-center mb-6">
                 <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center">

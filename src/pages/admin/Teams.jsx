@@ -3,118 +3,203 @@ import AdminSidebar from '../../components/AdminSidebar';
 
 const Teams = () => {
     const [teams, setTeams] = useState([]);
-    const [name, setName] = useState('');
-    const [category, setCategory] = useState('');
-    const [image, setImage] = useState(null);
+    const [teamName, setTeamName] = useState('');
+    const [teamCategory, setTeamCategory] = useState('');
+    const [teamImage, setTeamImage] = useState(null);
+    const [editId, setEditId] = useState(null);
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
-    // Fetch Teams from API
     useEffect(() => {
-        fetch('http://localhost:5000/api/teams')
-            .then((res) => res.json())
-            .then((data) => setTeams(data))
-            .catch((err) => console.error(err));
+        fetchTeams();
     }, []);
 
-    // Handle Add Team
-    const handleAddTeam = async () => {
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('category', category);
-        formData.append('image', image);
-
+    const fetchTeams = async () => {
+        setIsLoading(true);
         try {
-            const response = await fetch('http://localhost:5000/api/teams', {
-                method: 'POST',
-                body: formData,
-            });
-            const newTeam = await response.json();
-            setTeams([...teams, newTeam]);
-            setName('');
-            setCategory('');
-            setImage(null);
-        } catch (error) {
-            console.error('Error adding team:', error);
+            const response = await fetch('http://localhost:3000/api/teams');
+            if (!response.ok) throw new Error('Failed to fetch teams');
+            const data = await response.json();
+            setTeams(data);
+        } catch (err) {
+            setError('Failed to load teams');
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    // Handle Delete Team
-    const handleDeleteTeam = async (id) => {
+    const handleSubmit = async () => {
+        if (!teamName || !teamCategory) {
+            setError('Name and category are required');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('name', teamName);
+        formData.append('category', teamCategory);
+        if (teamImage) formData.append('image', teamImage);
+
+        setIsLoading(true);
+        setError('');
+
         try {
-            await fetch(`http://localhost:5000/api/teams/${id}`, {
+            let response;
+            if (editId) {
+                response = await fetch(`http://localhost:3000/api/teams/${editId}`, {
+                    method: 'PUT',
+                    body: formData,
+                });
+            } else {
+                response = await fetch('http://localhost:3000/api/teams', {
+                    method: 'POST',
+                    body: formData,
+                });
+            }
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to process request');
+            }
+
+            const updatedTeam = await response.json();
+            if (editId) {
+                setTeams(teams.map((team) => (team.id === editId ? updatedTeam : team)));
+            } else {
+                setTeams([...teams, updatedTeam]);
+            }
+
+            resetForm();
+        } catch (error) {
+            setError(error.message || 'Error processing request');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleEditClick = (team) => {
+        setEditId(team.id);
+        setTeamName(team.name);
+        setTeamCategory(team.category);
+        setTeamImage(null); // Tidak mengganti gambar kecuali diubah oleh user
+    };
+
+    const handleDeleteTeam = async (id) => {
+        if (!window.confirm('Are you sure you want to delete this team?')) return;
+
+        setIsLoading(true);
+        try {
+            const response = await fetch(`http://localhost:3000/api/teams/${id}`, {
                 method: 'DELETE',
             });
+
+            if (!response.ok) throw new Error('Failed to delete team');
+
             setTeams(teams.filter((team) => team.id !== id));
         } catch (error) {
-            console.error('Error deleting team:', error);
+            setError('Error deleting team');
+        } finally {
+            setIsLoading(false);
         }
+    };
+
+    const resetForm = () => {
+        setEditId(null);
+        setTeamName('');
+        setTeamCategory('');
+        setTeamImage(null);
     };
 
     return (
-        <div className="flex min-h-screen bg-gray-100">
+        <div className="flex min-w-screen bg-gray-100">
             <AdminSidebar />
             <div className="flex-1 p-8">
-                <h1 className="text-2xl font-bold mb-6">CRUD Team</h1>
+                <h1 className="text-2xl font-bold text-black mb-6">Manage Teams</h1>
+
+                {error && (
+                    <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">
+                        {error}
+                    </div>
+                )}
+
                 <div className="grid grid-cols-2 gap-8">
-                    {/* List Teams */}
+                    {/* LIST TIM */}
                     <div className="bg-white p-6 rounded-lg shadow-md">
-                        <h2 className="text-xl font-semibold mb-4">Team List</h2>
-                        {teams.length === 0 ? (
-                            <p>No teams available.</p>
+                        <h2 className="text-xl font-semibold text-sky-500 mb-4">Team List</h2>
+                        {isLoading ? (
+                            <p className='text-black'>Loading...</p>
+                        ) : teams.length === 0 ? (
+                            <p className='text-black'>No teams available.</p>
                         ) : (
-                            <ul>
+                            <ul className="space-y-2">
                                 {teams.map((team) => (
-                                    <li key={team.id} className="p-2 mb-2 bg-gray-50 rounded-lg flex items-center justify-between">
-                                        <span>{team.name} - {team.category}</span>
-                                        {team.image && (
-                                            <img
-                                                src={`http://localhost:5000${team.image}`}
-                                                alt={team.name}
-                                                className="w-12 h-12 object-cover rounded-md"
-                                            />
-                                        )}
-                                        <button
-                                            onClick={() => handleDeleteTeam(team.id)}
-                                            className="ml-4 text-red-500 hover:text-red-700"
-                                        >
-                                            Delete
-                                        </button>
+                                    <li key={team.id} className="p-3 bg-gray-50 rounded-lg flex items-center space-x-4">
+                                        <div className="flex items-center space-x-4 w-full">
+                                            {team.image && (
+                                                <img
+                                                    src={`http://localhost:3000${team.image}`}
+                                                    alt={team.name}
+                                                    className="w-12 h-12 object-cover rounded-md"
+                                                />
+                                            )}
+                                            <div className="flex-1">
+                                                <span className="font-medium text-gray-700">{team.name}</span>
+                                                <span className="block text-sm text-gray-500">{team.category}</span>
+                                            </div>
+                                            <div className="flex space-x-2">
+                                                <button onClick={() => handleEditClick(team)} className="bg-green-400 px-3 py-1 rounded-md hover:bg-green-200">Edit</button>
+                                                <button onClick={() => handleDeleteTeam(team.id)} className="bg-red-400 px-3 py-1 rounded-md hover:bg-red-200">Delete</button>
+                                            </div>
+                                        </div>
                                     </li>
                                 ))}
                             </ul>
                         )}
                     </div>
 
-                    {/* Form Add Team */}
+                    {/* FORM ADD/EDIT */}
                     <div className="bg-white p-6 rounded-lg shadow-md">
-                        <h2 className="text-xl font-semibold mb-4">Add Team</h2>
+                        <h2 className="text-xl font-semibold text-sky-500 mb-4">
+                            {editId ? 'Edit Team' : 'Add Team'}
+                        </h2>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Team Name</label>
                         <input
-                            type="text"
+                            value={teamName}
+                            onChange={(e) => setTeamName(e.target.value)}
                             placeholder="Team Name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="w-full mb-4 p-2 border border-gray-300 rounded-md"
+                            className="w-full p-2 text-gray-700 border rounded-md mb-2"
                         />
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
                         <select
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value)}
-                            className="w-full mb-4 p-2 border border-gray-300 rounded-md"
+                            value={teamCategory}
+                            onChange={(e) => setTeamCategory(e.target.value)}
+                            className="w-full p-2 border border-gray-300 text-gray-700 rounded-md"
                         >
                             <option value="">Select Category</option>
                             <option value="Software">Software</option>
                             <option value="Hardware">Hardware</option>
                         </select>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Team Image</label>
                         <input
                             type="file"
-                            accept="image/*"
-                            onChange={(e) => setImage(e.target.files[0])}
-                            className="w-full mb-4 p-2 border border-gray-300 rounded-md"
+                            onChange={(e) => setTeamImage(e.target.files[0])}
+                            className="w-full p-2 text-gray-700 border rounded-md mb-2"
                         />
-                        <button
-                            onClick={handleAddTeam}
-                            className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
-                        >
-                            Add Team
-                        </button>
+                        <div className="flex space-x-2">
+                            <button
+                                onClick={handleSubmit}
+                                className="bg-blue-500 px-3 py-1 text-white rounded-md"
+                            >
+                                {editId ? 'Save Changes' : 'Add Team'}
+                            </button>
+                            {editId && (
+                                <button
+                                    onClick={resetForm}
+                                    className="bg-gray-400 px-3 py-1 rounded-md"
+                                >
+                                    Cancel
+                                </button>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

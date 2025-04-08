@@ -9,7 +9,7 @@ const VotingSuccess = () => {
 
     useEffect(() => {
         if (teamId) {
-            fetch(`http://10.0.3.219:3000/api/teams/${teamId}`)
+            fetch(`http://localhost:3000/api/teams/${teamId}`)
                 .then((res) => res.json())
                 .then((data) => setTeam(data))
                 .catch((err) => console.error("Error fetching team data:", err));
@@ -42,7 +42,7 @@ const VotingSuccess = () => {
 
                     <div className="mt-6 bg-gray-200 p-4 rounded-lg shadow-lg w-48">
                         <img
-                            src={team.image ? `http://10.0.3.219:3000${team.image}` : "/default-team.png"}
+                            src={team.image ? `http://localhost:3000${team.image}` : "/default-team.png"}
                             alt={team.name}
                             className="w-full h-32 object-cover rounded-md"
                         />

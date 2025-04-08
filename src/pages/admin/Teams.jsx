@@ -184,20 +184,21 @@ const Teams = () => {
                             onChange={(e) => setTeamImage(e.target.files[0])}
                             className="w-full p-2 text-gray-700 border rounded-md mb-2"
                         />
-                        <div className="flex space-x-2">
+                        <div className="d-flex gap-2">
                             <button
                                 onClick={handleSubmit}
-                                className="bg-blue-500 px-3 py-1 text-white rounded-md"
+                                className="bg-blue-500 px-3 py-1 text-white rounded-md "
                             >
                                 {editId ? 'Save Changes' : 'Add Team'}
                             </button>
+
                             {editId && (
-                                <button
-                                    onClick={resetForm}
-                                    className="bg-gray-400 px-3 py-1 rounded-md"
-                                >
-                                    Cancel
-                                </button>
+                            <button
+                            onClick={resetForm}
+                            className="bg-gray-400 px-3 py-1 rounded-md"
+                            >
+                            Cancel
+                            </button>
                             )}
                         </div>
                     </div>

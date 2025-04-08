@@ -77,7 +77,7 @@ const Tokens = () => {
         <div className="flex min-w-screen bg-gray-100">
             <AdminSidebar />
             <div className="flex-1 p-8 max-w-screen h-full mx-auto">
-                <h1 className="text-2xl font-bold text-sky-500 mb-6">Token Management</h1>
+                <h1 className="text-2xl font-bold text-black mb-6">Token Management</h1>
                 {error && <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">{error}</div>}
 
                 <div className="bg-white p-6 rounded-lg shadow-md">

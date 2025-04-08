@@ -8,35 +8,49 @@ const ValidasiVoting = () => {
     const { teamId } = location.state || {};
     const [name, setName] = useState("");
     const [token, setToken] = useState("");
+    const [ipPublic, setIpPublic] = useState("");
 
     useEffect(() => {
         if (!teamId) {
             navigate("/");
             return;
         }
+
+        const fetchIP = async () => {
+            try {
+                const res = await fetch("https://api.ipify.org?format=json");
+                const data = await res.json();
+                setIpPublic(data.ip);
+            } catch (error) {
+                console.error("Gagal mengambil IP publik:", error);
+            }
+        };
+
+        fetchIP();
     }, [teamId, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         const requestData = {
             username: name,
             token: token,
-            teamId: teamId
+            teamId: teamId,
+            ipPublic: ipPublic
         };
-    
+
         try {
-            const response = await fetch("http://192.168.1.7:3000/api/voting-history", {
+            const response = await fetch("http://192.168.1.10:3000/api/voting-history", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(requestData),
             });
-    
+
             const data = await response.json();
             console.log("Response:", data);
-    
+
             if (response.ok) {
                 navigate("/voting-success", { state: { teamId } });
             } else {
@@ -46,7 +60,7 @@ const ValidasiVoting = () => {
             console.error("Error during voting:", error);
             navigate(`/voting-failed?error=${encodeURIComponent("Terjadi kesalahan pada server. Silakan coba lagi.")}`);
         }
-    };    
+    };
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-white to-blue-300 p-6">
@@ -88,7 +102,6 @@ const ValidasiVoting = () => {
                         <FaLock className="absolute left-3 text-gray-500" />
                     </div>
                 </div>
-
                 <button
                     type="submit"
                     className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300"

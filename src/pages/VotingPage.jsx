@@ -12,7 +12,7 @@ const VotingPage = () => {
     useEffect(() => {
         const fetchTeams = async () => {
             try {
-                const response = await fetch("http://192.168.1.7:3000/api/teams");
+                const response = await fetch("http://192.168.1.10:3000/api/teams");
                 const data = await response.json();
                 setTeams(data);
             } catch (error) {
@@ -67,7 +67,7 @@ const VotingPage = () => {
                     <div key={team.id} className="bg-gray-200 p-4 rounded-xl shadow-md flex flex-col items-center">
                         <div className="w-20 h-20 xs:w-24 xs:h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 lg:w-36 lg:h-36 bg-white rounded-md mb-4 overflow-hidden flex justify-center items-center">
                             <img
-                                src={team.image ? `http://192.168.1.7:3000${team.image}` : "https://via.placeholder.com/150"}
+                                src={team.image ? `http://192.168.1.10:3000${team.image}` : "https://via.placeholder.com/150"}
                                 alt={team.name}
                                 className="w-full h-full object-cover aspect-square max-w-[80px] xs:max-w-[100px] sm:max-w-[120px] md:max-w-[128px] lg:max-w-[140px]"
                             />

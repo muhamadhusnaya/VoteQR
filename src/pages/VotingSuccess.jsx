@@ -4,12 +4,11 @@ import { useLocation } from "react-router-dom";
 const VotingSuccess = () => {
     const location = useLocation();
     const { teamId } = location.state || {};
-
     const [team, setTeam] = useState(null);
 
     useEffect(() => {
         if (teamId) {
-            fetch(`http://localhost:3000/api/teams/${teamId}`)
+            fetch(`http://192.168.1.10:3000/api/teams/${teamId}`)
                 .then((res) => res.json())
                 .then((data) => setTeam(data))
                 .catch((err) => console.error("Error fetching team data:", err));
@@ -17,51 +16,54 @@ const VotingSuccess = () => {
     }, [teamId]);
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-white to-blue-300 p-6">
-            <h1 className="text-3xl font-bold text-black text-center">
-                Hi-Technology <br /> 2025
-            </h1>
-
-            <div className="mt-4">
-                <img
-                    src="https://hitech.hmtiudinus.org/img/event.png"
-                    alt="Event"
-                    className="w-50 h-50 object-contain"
-                />
+        <div className="overflow-hidden bg-[#130153] min-h-screen flex flex-col items-center relative text-white">
+            <div className="absolute w-full h-full">
+                <div className="absolute z-0 w-1/2 aspect-square bg-purple-light -right-1/5 -top-1/4 rounded-full blur-[300px]" />
+                <div className="absolute z-0 w-2/5 aspect-square bg-yellow -right-1/5 -bottom-1/5 rounded-full blur-[300px]" />
+                <div className="absolute z-0 w-1/2 aspect-square bg-blue-light -left-1/5 -bottom-1/4 rounded-full blur-[300px]" />
+                <div className="absolute w-full h-full bg-gradient-to-b from-transparent to-[#130153] z-10" />
             </div>
-
-            <h2 className="text-xl font-bold text-center mt-4">
-                VOTING BERHASIL
-            </h2>
-
-            {team ? (
-                <>
-                    <h3 className="text-2xl font-bold text-center text-black mt-2">
-                        {team.name}
-                    </h3>
-
-                    <div className="mt-6 bg-gray-200 p-4 rounded-lg shadow-lg w-48">
-                        <img
-                            src={team.image ? `http://localhost:3000${team.image}` : "/default-team.png"}
-                            alt={team.name}
-                            className="w-full h-32 object-cover rounded-md"
-                        />
-                        <p className="text-center font-semibold mt-2">{team.name}</p>
-                        <p className="text-center text-gray-600 text-sm">{team.category}</p>
+            <div className="flex flex-col items-center z-40 text-white mt-20">
+                <div className="relative">
+                    <h1 className="ttl text-4xl w-full whitespace-nowrap md:text-8xl tracking-wider z-50 font-bold text-center">
+                        HI-TECHNOLOGY
+                        <br /> 2025
+                    </h1>
+                    <h1 className="ttl text-4xl w-full md:text-8xl tracking-wider -z-10 absolute top-0 text-purple-light whitespace-nowrap left-1 font-bold text-center">
+                        HI-TECHNOLOGY
+                        <br /> 2025
+                    </h1>
+                    <h1 className="ttl text-4xl w-full md:text-8xl tracking-wider -z-10 absolute top-0 text-yellow whitespace-nowrap right-1 font-bold text-center">
+                        HI-TECHNOLOGY
+                        <br /> 2025
+                    </h1>
+                </div>
+            </div>
+            <div className="z-20 mt-10 flex flex-col items-center text-center px-6">
+                <h2 className="text-3xl font-bold text-yellow">VOTING BERHASIL</h2>
+                {team && (
+                    <div className="mt-8 bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-lg flex flex-col items-center max-w-sm w-full">
+                        <div className="w-32 h-32 bg-white rounded-full overflow-hidden flex items-center justify-center mb-4 border-4 border-yellow">
+                            <img
+                                src={
+                                    team.image
+                                        ? `http://192.168.1.10:3000${team.image}`
+                                        : "/default-team.png"
+                                }
+                                alt={team.name}
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+                        <h4 className="text-xl font-bold text-white">{team.name}</h4>
+                        <p className="text-purple-light text-sm">{team.category}</p>
                     </div>
-                </>
-            ) : (
-                <p>Loading team data...</p>
-            )}
+                )}
 
-            <p className="text-center text-black font-semibold mt-8">
-                TERIMA KASIH SUDAH BERKUNJUNG <br />
-                DAN SAMPAI JUMPA DI
-            </p>
-
-            <h3 className="text-2xl font-bold text-center text-black mt-2">
-                Hi - Technology 2026
-            </h3>
+                <p className="mt-12 text-2xl font-semibold">
+                    Terima kasih telah berpartisipasi dan Jangan Lupa Berkunjung ke Minigames <br />sampai jumpa di
+                </p>
+                <h4 className="text-2xl mt-2 font-bold text-yellow">Hi-Technology 2026</h4>
+            </div>
         </div>
     );
 };

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import AdminSidebar from "../../components/AdminSidebar";
 import { QRCodeCanvas } from "qrcode.react";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 const Tokens = () => {
     const [tokens, setTokens] = useState([]);
@@ -70,7 +72,24 @@ const Tokens = () => {
     });
 
     const downloadExcel = () => {
-        alert("Download Excel feature coming soon!");
+        const filteredData = filteredTokens.map((item, index) => ({
+            No: index + 1,
+            Token: item.token,
+            Status: item.status,
+            QRCodePath: item.pathQrcode ? `http://localhost:3000/uploads/qrcodes/${item.pathQrcode}` : "No Image",
+        }));
+    
+        const worksheet = XLSX.utils.json_to_sheet(filteredData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Tokens");
+    
+        const excelBuffer = XLSX.write(workbook, {
+            bookType: "xlsx",
+            type: "array"
+        });
+    
+        const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+        saveAs(data, "TokenList.xlsx");
     };
 
     return (

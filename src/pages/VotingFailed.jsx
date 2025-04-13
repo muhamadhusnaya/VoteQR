@@ -6,17 +6,36 @@ const VotingFailed = () => {
     const errorMessage = searchParams.get("error") || "Terjadi kesalahan";
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-white to-blue-300 text-center p-4">
-            <h1 className="text-3xl font-bold text-black">Hi-Technology 2025</h1>
-            <img
-                    src="https://hitech.hmtiudinus.org/img/event.png"
-                    alt="Event"
-                    className="w-50 h-50 object-contain"
-            />
-            <h2 className="text-2xl font-bold text-black">VOTING GAGAL</h2>
-            <p className="text-lg text-black mt-2">{errorMessage}</p>
-            <p className="text-sm text-black mt-4">SAMPAI JUMPA DI</p>
-            <h3 className="text-xl font-bold text-black">Hi - Technology 2026</h3>
+        <div className="overflow-hidden bg-[#130153] min-h-screen flex flex-col items-center relative text-white">
+            <div className="absolute w-full h-full">
+                <div className="absolute z-0 w-1/2 aspect-square bg-purple-light -right-1/5 -top-1/4 rounded-full blur-[300px]" />
+                <div className="absolute z-0 w-2/5 aspect-square bg-yellow -right-1/5 -bottom-1/5 rounded-full blur-[300px]" />
+                <div className="absolute z-0 w-1/2 aspect-square bg-blue-light -left-1/5 -bottom-1/4 rounded-full blur-[300px]" />
+                <div className="absolute w-full h-full bg-gradient-to-b from-transparent to-[#130153] z-10" />
+            </div>
+            <div className="flex flex-col items-center z-40 text-white mt-20">
+                <div className="relative">
+                    <h1 className="ttl text-4xl w-full whitespace-nowrap md:text-8xl tracking-wider z-50 font-bold text-center">
+                        HI-TECHNOLOGY
+                        <br /> 2025
+                    </h1>
+                    <h1 className="ttl text-4xl w-full md:text-8xl tracking-wider -z-10 absolute top-0 text-purple-light whitespace-nowrap left-1 font-bold text-center">
+                        HI-TECHNOLOGY
+                        <br /> 2025
+                    </h1>
+                    <h1 className="ttl text-4xl w-full md:text-8xl tracking-wider -z-10 absolute top-0 text-yellow whitespace-nowrap right-1 font-bold text-center">
+                        HI-TECHNOLOGY
+                        <br /> 2025
+                    </h1>
+                </div>
+            </div>
+            <div className="z-20 mt-10 flex flex-col items-center text-center px-6">
+                <h2 className="text-3xl font-bold text-red-500">VOTING GAGAL</h2>
+                <p className="text-lg text-white mt-4 max-w-md">{errorMessage}</p>
+
+                <p className="text-sm text-white mt-8">Jangan Lupa Berkunjung ke Minigames <br />sampai jumpa di</p>
+                <h3 className="text-2xl font-bold text-yellow mt-2">Hi - Technology 2026</h3>
+            </div>
         </div>
     );
 };

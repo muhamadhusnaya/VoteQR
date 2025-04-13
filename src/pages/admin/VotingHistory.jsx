@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AdminSidebar from "../../components/AdminSidebar";
 import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 const VotingHistory = () => {
     const [votingData, setVotingData] = useState([]);
@@ -32,15 +33,22 @@ const VotingHistory = () => {
         const filteredData = getFilteredData().map((item, index) => ({
             No: index + 1,
             Nama_Pengguna: item.username,
-            Token: item.tokenString, // gunakan tokenString
+            Token: item.tokenString,
             IP_Publik: item.ipPublic,
             Tanggal: item.createdAt ? new Date(item.createdAt).toLocaleString() : "-",
         }));
-
+    
         const worksheet = XLSX.utils.json_to_sheet(filteredData);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Voting History");
-        XLSX.writeFile(workbook, "VotingHistory.xlsx");
+    
+        const excelBuffer = XLSX.write(workbook, {
+            bookType: "xlsx",
+            type: "array"
+        });
+    
+        const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+        saveAs(data, "VotingHistory.xlsx");
     };
 
     const getFilteredData = () => {

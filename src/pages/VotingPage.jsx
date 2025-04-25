@@ -3,8 +3,10 @@ import React, { useState, useEffect } from "react";
 import Software from "../components/SoftwareIcons";
 import HardwareIcons from "../components/HardwareIcons";
 import SoftwareIcons from "../components/SoftwareIcons";
+import Countdown from "../components/Countdown";
 
 const VotingPage = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const [teams, setTeams] = useState([]);
     const navigate = useNavigate();
 
@@ -13,10 +15,11 @@ const VotingPage = () => {
     };
 
     useEffect(() => {
+
         const fetchTeams = async () => {
             try {
                 const response = await fetch(
-                    "http://192.168.1.10:3000/api/teams"
+                    apiUrl + "/api/teams"
                 );
                 const data = await response.json();
                 setTeams(data);
@@ -59,37 +62,12 @@ const VotingPage = () => {
                         <p className="md:text-2xl text-xl mt-36 text-center">
                             Voting Akan Di Tutup Dalam
                         </p>
-                        <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div className="border text-purple-light border-purple-light h-full aspect-square flex flex-col items-center justify-center p-8 border-b-4">
-                                <h1 className="text-xl md:text-5xl font-bold">
-                                    33
-                                </h1>
-                                <p className="text-xs md:text-base">Days</p>
-                            </div>
-                            <div className="border text-blue-lighter border-blue-lighter h-full aspect-square flex flex-col items-center justify-center p-8 border-b-4">
-                                <h1 className="text-xl md:text-5xl font-bold">
-                                    5
-                                </h1>
-                                <p className="text-xs md:text-base">Hours</p>
-                            </div>
-                            <div className="border text-pink border-pink h-full aspect-square flex flex-col items-center justify-center p-8 border-b-4">
-                                <h1 className="text-xl md:text-5xl font-bold">
-                                    9
-                                </h1>
-                                <p className="text-xs md:text-base">Minutes</p>
-                            </div>
-                            <div className="border text-white border-white h-full aspect-square flex flex-col items-center justify-center p-8 border-b-4 border-b-white">
-                                <h1 className="text-xl md:text-5xl font-bold">
-                                    10
-                                </h1>
-                                <p className="text-xs md:text-base">Seconds</p>
-                            </div>
-                        </div>
+                        <Countdown />
                     </div>
                     <div className="sm:flex sm:flex-col sm:items-center z-40 text-white text-center my-20 pt-10">
                         <h1 className="sm:text-5xl font-bold text-4xl">
                             KATEGORI
-                        {/* <div className="absolute w-full h-full top-80 left-44">
+                            {/* <div className="absolute w-full h-full top-80 left-44">
                             <div className="w-1/5 aspect-square bg-yellow rounded-full blur-[300px] top-0 left-1 absolute z-10"></div>
                             <div className="w-1/2 aspect-square bg-red-light rounded-full blur-[300px] top-5 right-1 absolute z-10"></div>
                         </div> */}

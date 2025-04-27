@@ -1,14 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Software from "../components/SoftwareIcons";
 import HardwareIcons from "../components/HardwareIcons";
 import SoftwareIcons from "../components/SoftwareIcons";
 import Countdown from "../components/Countdown";
+import HeroTitle from "../components/Texts/HeroTitle";
+import { CountdownContext } from "../Context/CountdownContext";
 
 const VotingPage = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
     const [teams, setTeams] = useState([]);
     const navigate = useNavigate();
+    const {isExpired, setIsExpired} = useContext(CountdownContext);
 
     const handleVote = (teamId) => {
         navigate(`/voting-validasi/${teamId}`); // Pastikan teamId ikut di dalam URL
@@ -31,7 +34,7 @@ const VotingPage = () => {
     }, []);
 
     return (
-        <div className="overflow-hidden bg-blue-darkest">
+        <div className="overflow-hidden bg-blue-darkest pb-[20%]">
             <div className="scroll-mt-24">
                 <div className="min-h-screen flex flex-col overflow-hidden items-center justify-center relative bg-[#130153]">
                     <div className="absolute overflow-hidden w-full h-full bg-blue-darkest max-w-full">
@@ -46,25 +49,14 @@ const VotingPage = () => {
                             WELCOME TO
                         </p>
                         <div className="relative">
-                            <h1 className="ttl text-4xl w-full whitespace-nowrap md:text-8xl tracking-wider z-50 font-bold text-center">
-                                HI-TECHNOLOGY
-                                <br /> 2025
-                            </h1>
-                            <h1 className="ttl text-4xl w-full md:text-8xl tracking-wider -z-10 absolute top-0 text-purple-light whitespace-nowrap left-1 font-bold text-center">
-                                HI-TECHNOLOGY
-                                <br /> 2025
-                            </h1>
-                            <h1 className="ttl text-4xl w-full md:text-8xl tracking-wider -z-10 absolute top-0 text-yellow whitespace-nowrap right-1 font-bold text-center">
-                                HI-TECHNOLOGY
-                                <br /> 2025
-                            </h1>
+                            <HeroTitle />
                         </div>
                         <p className="md:text-2xl text-xl mt-36 text-center">
-                            Voting Akan Di Tutup Dalam
+                            {isExpired == undefined ? "" : isExpired == true ? "Voting Telah Ditutup" : "Voting Akan Di Tutup Dalam"}
                         </p>
                         <Countdown />
                     </div>
-                    <div className="sm:flex sm:flex-col sm:items-center z-40 text-white text-center my-20 pt-10">
+                    <div className="w-full sm:flex sm:flex-col sm:items-center z-40 text-white text-center my-20 pt-10">
                         <h1 className="sm:text-5xl font-bold text-4xl">
                             KATEGORI
                             {/* <div className="absolute w-full h-full top-80 left-44">
@@ -73,7 +65,7 @@ const VotingPage = () => {
                         </div> */}
                             <span className="text-yellow"> LOMBA</span>
                         </h1>
-                        <div className="sm:mt-10 sm:flex sm:gap-4 px-5">
+                        <div className="sm:mt-10 sm:flex sm:gap-4 px-5 block w-full sm:flex">
                             <SoftwareIcons />
                             <HardwareIcons />
                         </div>
@@ -85,7 +77,7 @@ const VotingPage = () => {
                         Voting Tim Pilihan Anda
                     </h3>
 
-                    <div className="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(180px,1fr))] xl:[grid-template-columns:repeat(auto-fit,minmax(250px,1fr))] px-4">
+                    <div className="grid gap-3 sm:gap-6 [grid-template-columns:repeat(2,2fr)] sm:[grid-template-columns:repeat(auto-fit,minmax(180px,1fr))] xl:[grid-template-columns:repeat(auto-fit,minmax(250px,1fr))] px-1 sm:px-4">
                         {teams.map((team) => (
                             <div
                                 key={team.id}

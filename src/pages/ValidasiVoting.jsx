@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaUser, FaLock } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
+import HeroTitle from "../components/Texts/HeroTitle";
 
 const ValidasiVoting = () => {
     const location = useLocation();
@@ -74,7 +75,7 @@ const ValidasiVoting = () => {
     };
 
     return (
-        <div className="overflow-hidden bg-blue-darkest">
+        <div className="overflow-hidden bg-blue-darkest pb-[20%]">
             <div className="scroll-mt-24">
                 <div className="min-h-screen flex flex-col overflow-hidden items-center justify-center relative bg-[#130153]">
                     <div className="absolute overflow-hidden w-full h-full bg-blue-darkest max-w-full">
@@ -86,27 +87,16 @@ const ValidasiVoting = () => {
                     </div>
                     <div className="flex flex-col items-center z-40 text-white mt-20">
                         <div className="relative">
-                            <h1 className="ttl text-4xl w-full whitespace-nowrap md:text-8xl tracking-wider z-50 font-bold text-center">
-                                HI-TECHNOLOGY
-                                <br /> 2025
-                            </h1>
-                            <h1 className="ttl text-4xl w-full md:text-8xl tracking-wider -z-10 absolute top-0 text-purple-light whitespace-nowrap left-1 font-bold text-center">
-                                HI-TECHNOLOGY
-                                <br /> 2025
-                            </h1>
-                            <h1 className="ttl text-4xl w-full md:text-8xl tracking-wider -z-10 absolute top-0 text-yellow whitespace-nowrap right-1 font-bold text-center">
-                                HI-TECHNOLOGY
-                                <br /> 2025
-                            </h1>
+                            <HeroTitle />
                         </div>
                     </div>
-                    <div className="w-full max-w-md mt-12 z-40 bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg">
-                        <h2 className="text-2xl md:text-3xl font-semibold text-center mb-6">
-                            Silahkan Validasi Diri Anda
+                    <div className="w-[80%] sm:max-w-md mt-12 z-40 bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg">
+                        <h2 className="text-lg sm:text-2xl text-white font-semibold text-center mb-6">
+                            Silakan Validasi Diri Anda
                         </h2>
                         <form onSubmit={handleSubmit}>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium mb-1">
+                                <label className="text-white block text-sm font-medium mb-1">
                                     Masukkan Nama
                                 </label>
                                 <div className="relative flex items-center">
@@ -124,7 +114,7 @@ const ValidasiVoting = () => {
                                 </div>
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium mb-1">
+                                <label className="text-white block text-sm font-medium mb-1">
                                     Masukkan Token
                                 </label>
                                 <div className="relative flex items-center">

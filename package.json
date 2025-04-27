@@ -12,6 +12,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.0.15",
     "axios": "^1.8.4",
+    "crypto-js": "^4.2.0",
     "dotenv": "^16.5.0",
     "file-saver": "^2.0.5",
     "jsqr": "^1.4.0",

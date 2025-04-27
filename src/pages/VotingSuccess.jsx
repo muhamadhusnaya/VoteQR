@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import HeroTitle from "../components/Texts/HeroTitle";
 
 const VotingSuccess = () => {
     const location = useLocation();
@@ -25,18 +26,7 @@ const VotingSuccess = () => {
             </div>
             <div className="flex flex-col items-center z-40 text-white mt-20">
                 <div className="relative">
-                    <h1 className="ttl text-4xl w-full whitespace-nowrap md:text-8xl tracking-wider z-50 font-bold text-center">
-                        HI-TECHNOLOGY
-                        <br /> 2025
-                    </h1>
-                    <h1 className="ttl text-4xl w-full md:text-8xl tracking-wider -z-10 absolute top-0 text-purple-light whitespace-nowrap left-1 font-bold text-center">
-                        HI-TECHNOLOGY
-                        <br /> 2025
-                    </h1>
-                    <h1 className="ttl text-4xl w-full md:text-8xl tracking-wider -z-10 absolute top-0 text-yellow whitespace-nowrap right-1 font-bold text-center">
-                        HI-TECHNOLOGY
-                        <br /> 2025
-                    </h1>
+                    <HeroTitle />
                 </div>
             </div>
             <div className="z-20 mt-10 flex flex-col items-center text-center px-6">

@@ -2,7 +2,7 @@ import React from 'react';
 
 const SoftwareIcons = () => {
     return (
-        <div className="border border-white bg-linear-to-br from-blue-darkest to-blue-light from-15% to-90% rounded-lg sm:w-lg py-10 flex flex-col items-center my-4">
+        <div className="border border-white bg-linear-to-br from-blue-darkest to-blue-light from-15% to-90% rounded-lg sm:w-full py-10 flex flex-col items-center my-4">
             <svg
                 stroke="currentColor"
                 fill="currentColor"

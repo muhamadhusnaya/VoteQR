@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import HeroTitle from "../components/Texts/HeroTitle";
+import ReminderMessage from "../components/Texts/ReminderMessage";
 
 const VotingSuccess = () => {
     const location = useLocation();
@@ -29,7 +30,7 @@ const VotingSuccess = () => {
                     <HeroTitle />
                 </div>
             </div>
-            <div className="z-20 mt-10 flex flex-col items-center text-center px-6">
+            <div className="z-20 mt-10 mb-20 flex flex-col items-center text-center px-6">
                 <h2 className="text-3xl font-bold text-yellow">VOTING BERHASIL</h2>
                 {team && (
                     <div className="mt-8 bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-lg flex flex-col items-center max-w-sm w-full">
@@ -49,9 +50,10 @@ const VotingSuccess = () => {
                     </div>
                 )}
 
-                <p className="mt-12 text-2xl font-semibold">
+                <ReminderMessage>
                     Terima kasih telah berpartisipasi dan Jangan Lupa Berkunjung ke Minigames <br />sampai jumpa di
-                </p>
+                </ReminderMessage>
+                
                 <h4 className="text-2xl mt-2 font-bold text-yellow">Hi-Technology 2026</h4>
             </div>
         </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
 import HeroTitle from "../components/Texts/HeroTitle";
+import ReminderMessage from "../components/Texts/ReminderMessage";
 
 const VotingFailed = () => {
     const [searchParams] = useSearchParams();
@@ -19,11 +20,11 @@ const VotingFailed = () => {
                     <HeroTitle />
                 </div>
             </div>
-            <div className="z-20 mt-10 flex flex-col items-center text-center px-6">
+            <div className="z-20 mt-10 mb-20 flex flex-col items-center text-center px-6">
                 <h2 className="text-3xl font-bold text-red-500">VOTING GAGAL</h2>
-                <p className="text-lg text-white mt-4 max-w-md">{errorMessage}</p>
+                <p className="text-base text-white mt-1 max-w-md">{errorMessage}</p>
 
-                <p className="text-sm text-white mt-8">Jangan Lupa Berkunjung ke Minigames <br />sampai jumpa di</p>
+                <ReminderMessage>Jangan Lupa Berkunjung ke Minigames <br />sampai jumpa di</ReminderMessage>
                 <h3 className="text-2xl font-bold text-yellow mt-2">Hi - Technology 2026</h3>
             </div>
         </div>
